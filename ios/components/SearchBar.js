@@ -1,9 +1,15 @@
-// SearchBar.js
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, TextInput, View, Keyboard, Button } from "react-native";
 import { Feather, Entypo } from "@expo/vector-icons";
 
-const SearchBar = ({clicked, searchPhrase, setSearchPhrase, setCLicked}) => {
+const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked, onSearch }) => {
+  
+  useEffect(() => {
+    if (searchPhrase) {
+      onSearch(searchPhrase);
+    }
+  }, [searchPhrase]);
+
   return (
     <View style={styles.container}>
       <View
@@ -24,16 +30,14 @@ const SearchBar = ({clicked, searchPhrase, setSearchPhrase, setCLicked}) => {
         <TextInput
           style={styles.input}
           placeholder="Search"
+          placeholderTextColor="#333"
           value={searchPhrase}
           onChangeText={setSearchPhrase}
-          onFocus={() => {
-            setCLicked(true);
-          }}
         />
         {/* cross Icon, depending on whether the search bar is clicked or not */}
         {clicked && (
           <Entypo name="cross" size={20} color="black" style={{ padding: 1 }} onPress={() => {
-              setSearchPhrase("")
+              setSearchPhrase("");
           }}/>
         )}
       </View>
@@ -44,25 +48,26 @@ const SearchBar = ({clicked, searchPhrase, setSearchPhrase, setCLicked}) => {
             title="Cancel"
             onPress={() => {
               Keyboard.dismiss();
-              setCLicked(false);
+              setClicked(false);
             }}
-          ></Button>
+          />
         </View>
       )}
     </View>
   );
 };
+
 export default SearchBar;
 
 // styles
 const styles = StyleSheet.create({
   container: {
     margin: 15,
+    marginTop: 50,
     justifyContent: "flex-start",
     alignItems: "center",
     flexDirection: "row",
     width: "90%",
-
   },
   searchBar__unclicked: {
     padding: 10,

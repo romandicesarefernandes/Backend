@@ -1,5 +1,10 @@
+
+import { useNavigation } from "@react-navigation/native";
+import {patientpage} from "../screens/patientpage";
+
+
 export function handleRegister(name, password, phoneNumber, email) {
-  fetch("http://192.168.1.37:5000/api/register", {
+  fetch("http://192.168.1.21:5000/api/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -13,7 +18,7 @@ export function handleRegister(name, password, phoneNumber, email) {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+     //c console.log(data);
       // Handle response data
     })
     .catch((error) => {
@@ -22,7 +27,8 @@ export function handleRegister(name, password, phoneNumber, email) {
 }
 
 export function handleLogin(email, password) {
-  return fetch("http://192.168.1.37:5000/api/login", {
+ 
+  return fetch("http://192.168.1.21:5000/api/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -36,7 +42,11 @@ export function handleLogin(email, password) {
   })
     .then((response) => response.text()) // Use text() instead of json()
     .then((data) => {
-      console.log(data);
+      //console.log(data);
+      if (data === "Login Success") {
+        return true;
+      }
+
       return data; // Return the string data
     })
     .catch((error) => {
@@ -45,7 +55,7 @@ export function handleLogin(email, password) {
 }
 export async function handleFood_search(ingr, brand) {
   try {
-    const url = new URL("http://192.168.1.37:5000/api/food_search");
+    const url = new URL("http://192.168.1.21:5000/api/food_search");
     const params = { ingr, brand };
     Object.keys(params).forEach((key) =>
       url.searchParams.append(key, params[key])

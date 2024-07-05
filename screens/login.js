@@ -149,7 +149,12 @@ const Login = () => {
         <Button
           title="Login"
           filled
-          onPress={() => handleLogin(EMAIL, PASSWORD)}
+          onPress={() => {if(handleLogin(EMAIL, PASSWORD) === true) {
+            navigation.navigate("patientpage");
+          }
+        
+        console.log(handleLogin(EMAIL, PASSWORD) );
+          }}
           style={{
             marginTop: 18,
             marginBottom: 4,

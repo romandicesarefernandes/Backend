@@ -1,57 +1,64 @@
 import React from "react";
-import { StyleSheet, View, TouchableOpacity, Image, Text } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import COLORS from "../../constants/colors";
-import Ring from "./ring";
 
-export default function FoodCard({ images, names }) {
+export default function FoodCard({ names, brands }) {
   console.log(names, "names");
-  // Step 1: Accept images as a prop
+
   return (
-    <View style = {styles.Card}>
-        <Text> Hello world</Text>
+    <View style={styles.container}>
+      {brands.map((brand, index) => (
+        <View key={index} style={styles.Card}>
+          <Text>{names[index]}</Text>
 
-        <View style = {styles.subcard}>
+          <View style={styles.subcard}>
+            <Text>150 calories</Text>
+          </View>
 
-            <Text> 150 calories</Text>
-            
-       </View>
-       <View style = {styles.subcard}>
-
-<Text> Goya inc.</Text>
-
-</View>
-        
-
+          <View style={styles.subcard}>
+            <Text>{brand}</Text>
+          </View>
+        </View>
+      ))}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    
+    
+   
+    flexWrap: 'wrap',
+    flexDirection: 'row'
+  },
   Card: {
     borderRadius: 10,
-    elevation: 3,
-    backgroundColor: "rgba(200, 200, 200, 0.5)", // semi-transparent grey 
+
+
+    
+    // justifyContent: "center",
+
+   
+    backgroundColor: "rgba(200, 200, 200, 0.5)", // semi-transparent grey
     shadowOffset: { width: 1, height: 1 },
     shadowColor: "rgba(255, 255, 255, 0.0)",
     borderWidth: 0.7,
     borderColor: COLORS.primary,
-    
     shadowOpacity: 0.3,
     shadowRadius: 2,
     marginHorizontal: 4,
     marginVertical: 6,
     padding: 10,
   },
-  subcard:{
+  subcard: {
     marginHorizontal: 0,
     borderWidth: 0.7,
     backgroundColor: "rgba(180, 180, 180, 0.5)",
     width: 100,
     margin: 2,
     borderRadius: 5,
-
-    
-
   },
   cardContent: {},
   box: {

@@ -8,13 +8,24 @@ import Card from "../ios/components/card";
 import { LinearGradient } from "expo-linear-gradient";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { AntDesign } from "@expo/vector-icons";
-let images = [];
+let calories = [];
 let names = [];
+let brands = [];
 
 async function getFoodData(ingr, brand) {
   const Data = await handleFood_search(ingr, brand);
   const foodData = JSON.parse(Data);
+  console.log("++++++++++++++++++++++++++++++++++++++++\n");
   console.log(foodData[0].food.foodId);
+
+  for (let i = 0; i < foodData.length; i++) {
+
+    names[i] = foodData[i].food.knownAs;
+    calories[i] = foodData[i].food.calories;
+    brands[i] = foodData[i].food.brand;
+    console.log(names[i],  brands[i], "\n");
+
+  }
 
  // console.log("\n" + images[1]);
   return foodData;
@@ -24,7 +35,7 @@ const SearchFoodPage = () => {
   const [selectedIcon, setSelectedIcon] = useState(null);
   const data = getFoodData("rice", "");
 
-  console.log("\n" + data);
+ // console.log("\n" + data);
 
   return (
     <LinearGradient
@@ -68,7 +79,7 @@ const SearchFoodPage = () => {
           style={{ marginTop: 20 }}
           onPress={() => {
             setSelectedIcon("home");
-            handleFood_search("potato", "lays");
+            //handleFood_search("potato", "lays");
           }}
         >
           <AntDesign
@@ -93,13 +104,7 @@ const SearchFoodPage = () => {
       <View style={styles.container}>
         <SearchBar></SearchBar>
         <View style = {styles.mainContainer}> 
-        <FoodCard images={images} names={names} />
-        <FoodCard images={images} names={names} />
-        <FoodCard images={images} names={names} />
-        <FoodCard images={images} names={names} />
-        <FoodCard images={images} names={names} />
-        <FoodCard images={images} names={names} />
-        <FoodCard images={images} names={names} />
+        <FoodCard names={names} brands={brands} />
 
         </View>
         

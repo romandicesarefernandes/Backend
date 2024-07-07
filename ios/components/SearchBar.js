@@ -1,14 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { StyleSheet, TextInput, View, Keyboard, Button } from "react-native";
 import { Feather, Entypo } from "@expo/vector-icons";
 
 const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked, onSearch }) => {
   
-  useEffect(() => {
-    if (searchPhrase) {
-      onSearch(searchPhrase);
-    }
-  }, [searchPhrase]);
+  const [query, setQuery] = useState("");
 
   return (
     <View style={styles.container}>
@@ -32,7 +28,13 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked, onSearc
           placeholder="Search"
           placeholderTextColor="#333"
           value={searchPhrase}
-          onChangeText={setSearchPhrase}
+         
+          onChangeText={(text) => {
+            
+            setQuery(text);
+            console.log(query);
+          }}
+
         />
         {/* cross Icon, depending on whether the search bar is clicked or not */}
         {clicked && (

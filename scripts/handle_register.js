@@ -4,7 +4,7 @@ import {patientpage} from "../screens/patientpage";
 
 
 export function handleRegister(name, password, phoneNumber, email) {
-  fetch("http://192.168.1.96:5000/api/register", {
+  fetch("http://192.168.1.41:5000/api/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -28,7 +28,7 @@ export function handleRegister(name, password, phoneNumber, email) {
 
 export function handleLogin(email, password) {
  
-  return fetch("http://192.168.1.96:5000/api/login", {
+  return fetch("http://192.168.1.41:5000/api/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -55,7 +55,7 @@ export function handleLogin(email, password) {
 }
 export async function handleFood_search(ingr, brand) {
   try {
-    const url = new URL("http://192.168.1.96:5000/api/food_search");
+    const url = new URL("http://192.168.1.41:5000/api/food_search");
     const params = { ingr, brand };
     Object.keys(params).forEach((key) =>
       url.searchParams.append(key, params[key])

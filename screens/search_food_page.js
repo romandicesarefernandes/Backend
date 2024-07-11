@@ -8,9 +8,11 @@ import Card from "../ios/components/card";
 import { LinearGradient } from "expo-linear-gradient";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { AntDesign } from "@expo/vector-icons";
+import {getQuery} from "../ios/components/SearchBar";
 let calories = [];
 let names = [];
 let brands = [];
+
 
 async function getFoodData(ingr, brand) {
   const Data = await handleFood_search(ingr, brand);
@@ -23,6 +25,10 @@ async function getFoodData(ingr, brand) {
     names[i] = foodData[i].food.knownAs;
     calories[i] = foodData[i].food.calories;
     brands[i] = foodData[i].food.brand;
+    calories[i] = foodData[i].food.nutrients.calories;
+    if(foodData[i].food.brand == null){
+      brands[i] = "Generic";  
+    }
     console.log(names[i],  brands[i], "\n");
 
   }
@@ -32,8 +38,15 @@ async function getFoodData(ingr, brand) {
 }
 
 const SearchFoodPage = () => {
+  const [query, setQuery] = useState(""); //HERE
   const [selectedIcon, setSelectedIcon] = useState(null);
-  const data = getFoodData("rice", "");
+   getFoodData("pasta", "");
+
+   const handleQueryUpdate = (newQuery) => {
+    setQuery(newQuery);
+    console.log("Query updated to: ", newQuery);
+    // Perform any other actions with the new query as needed
+  };
 
  // console.log("\n" + data);
 
@@ -102,7 +115,12 @@ const SearchFoodPage = () => {
       </View>
     <ScrollView>
       <View style={styles.container}>
-        <SearchBar></SearchBar>
+      <SearchBar
+    
+        setQueryCallback={handleQueryUpdate}
+         // Pass the callback to update query
+      />
+        
         <View style = {styles.mainContainer}> 
         <FoodCard names={names} brands={brands} />
 

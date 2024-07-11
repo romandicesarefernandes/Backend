@@ -2,7 +2,14 @@ import React, { useState } from "react";
 import { StyleSheet, TextInput, View, Keyboard, Button } from "react-native";
 import { Feather, Entypo } from "@expo/vector-icons";
 
+
 const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked, onSearch }) => {
+
+  const getQuery = () => {
+
+
+    return query;
+  }
   
   const [query, setQuery] = useState("");
 
@@ -32,7 +39,9 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked, onSearc
           onChangeText={(text) => {
             
             setQuery(text);
-            console.log(query);
+            let temp = getQuery();
+            console.log("Query", temp);
+            
           }}
 
         />

@@ -9,14 +9,14 @@ export default function FoodCard({ names, brands }) {
     <View style={styles.container}>
       {brands.map((brand, index) => (
         <View key={index} style={styles.Card}>
-          <Text>{names[index]}</Text>
+          <Text style={styles.cardText}>{names[index]}</Text>
 
           <View style={styles.subcard}>
-            <Text>150 calories</Text>
+            <Text style={styles.cardText}>150 calories</Text>
           </View>
 
           <View style={styles.subcard}>
-            <Text>{brand}</Text>
+            <Text style={styles.cardText}>{brand}</Text>
           </View>
         </View>
       ))}
@@ -35,12 +35,6 @@ const styles = StyleSheet.create({
   },
   Card: {
     borderRadius: 10,
-
-
-    
-    // justifyContent: "center",
-
-   
     backgroundColor: "rgba(200, 200, 200, 0.5)", // semi-transparent grey
     shadowOffset: { width: 1, height: 1 },
     shadowColor: "rgba(255, 255, 255, 0.0)",
@@ -50,10 +44,14 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     marginHorizontal: 4,
     marginVertical: 6,
-    padding: 10,
+    width: 100, // Set a fixed width
+    height: 100, // Set a fixed height
   },
+  
   subcard: {
     marginHorizontal: 0,
+    textOverflow: 'ellipsis',
+   
     borderWidth: 0.7,
     backgroundColor: "rgba(180, 180, 180, 0.5)",
     width: 100,
@@ -68,6 +66,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
     padding: 10,
     borderRadius: 5,
+    
+
   },
   image: {
     height: 100,

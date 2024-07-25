@@ -1,40 +1,52 @@
 import React from "react";
-import { StyleSheet, View, TouchableOpacity, Image, Text } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Image, Text, Dimensions } from "react-native";
 import COLORS from "../../constants/colors";
-import Ring from "./ring";
 
-export default function FoodCard({ images, names }) {
-  console.log(images);
-  // Step 1: Accept images as a prop
-  return (
-    <View>
-      {images.map(
-        (
-          images,
-          index // Step 2: Map over the images array
-        ) => (
-          <TouchableOpacity
-            key={index}
-            onPress={() => {
-              /* Handle onPress event */
-            }}
-          >
-            <View style={styles.Card}>
-              <Image source={{ uri: images }} style={styles.image} />
-              <View>
-                <Text>{names[index]}</Text>
-                <Text>500 kc</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-        )
-      )}
-    </View>
-  );
-}
+const FoodCard = ({ images, names, onCardPress }) => {
+  const screenWidth = Dimensions.get("window").width;
+  const cardWidth = screenWidth / 2.85 - 16; 
+
+  const renderCards = () => {
+    const rows = [];
+    for (let i = 0; i < images.length; i += 3) {
+      const rowItems = images.slice(i, i + 3).map((image, index) => (
+        <TouchableOpacity
+          key={index}
+          style={[styles.card, { width: cardWidth }]}
+          onPress={() => onCardPress(index)}
+        >
+          <Image source={{ uri: image }} style={styles.image} />
+          <Text style={styles.name}>{names[index]}</Text>
+          <Text style={styles.calories}>500 cal</Text>
+          <Text style={styles.calories}>Fats:30g</Text>
+          <Text style={styles.calories}>Proteins:30g</Text>
+          <Text style={styles.calories}>Carbs:40g</Text>
+        </TouchableOpacity>
+      ));
+      rows.push(
+        <View key={i} style={styles.row}>
+          {rowItems}
+        </View>
+      );
+    }
+    return rows;
+  };
+
+  return <View style={styles.container}>{renderCards()}</View>;
+};
 
 const styles = StyleSheet.create({
-  Card: {
+  container: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 10,
+  },
+  card: {
     borderRadius: 10,
     elevation: 3,
     backgroundColor: "rgba(255, 255, 255, 0.2)", // semi-transparent white
@@ -48,17 +60,21 @@ const styles = StyleSheet.create({
     marginVertical: 6,
     padding: 20,
   },
-  cardContent: {},
-  box: {
-    borderWidth: 1,
-    borderColor: COLORS.primary,
-    letterSpacing: 20,
-    marginTop: 10,
-    padding: 10,
-    borderRadius: 5,
-  },
   image: {
-    height: 100,
-    width: 100,
+    width: "100%",
+    height: 90,
+    borderRadius: 10,
+    resizeMode: "contain"
+  },
+  name: {
+    marginTop: 5,
+    textAlign: "center",
+  },
+  calories: {
+    textAlign: "left",
+    fontSize: 11,
   },
 });
+
+export default FoodCard;
+

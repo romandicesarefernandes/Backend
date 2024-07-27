@@ -12,6 +12,7 @@ import mainpage from "./screens/providerpage";
 import patientpage from "./screens/patientpage";
 import questions from "./screens/questionspage";
 import SearchFoodPage from "./screens/search_food_page";
+import foodinfopage from "./screens/food_info";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -57,6 +58,12 @@ export default function App() {
           name="search_food_page"
           component={SearchFoodPage}
           options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="food_info"
+          component={foodinfopage}
+          options={{headerShown: false}}
         />
       </Stack.Navigator>
     </NavigationContainer>

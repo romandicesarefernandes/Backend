@@ -4,7 +4,7 @@ import COLORS from "../../constants/colors";
 
 const FoodCard = ({ images, names, onCardPress }) => {
   const screenWidth = Dimensions.get("window").width;
-  const cardWidth = screenWidth / 2.85 - 16; 
+  const cardWidth = screenWidth / 3 - 16; 
 
   const renderCards = () => {
     const rows = [];
@@ -13,7 +13,7 @@ const FoodCard = ({ images, names, onCardPress }) => {
         <TouchableOpacity
           key={index}
           style={[styles.card, { width: cardWidth }]}
-          onPress={() => onCardPress(index)}
+          onPress={() => onCardPress(names[index], image)}
         >
           <Image source={{ uri: image }} style={styles.image} />
           <Text style={styles.name}>{names[index]}</Text>
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   calories: {
-    textAlign: "left",
+    textAlign: "center",
     fontSize: 11,
   },
 });

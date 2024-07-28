@@ -9,6 +9,7 @@ const SearchFoodPage = ({navigation}) => {
     "https://banner2.cleanpng.com/20180722/gfc/kisspng-user-profile-2018-in-sight-user-conference-expo-5b554c0968c377.0307553315323166814291.jpg",
     "https://example.com/default-image2.jpg",
     "https://example.com/default-image2.jpg",
+
   ]);
   const [names, setNames] = useState(["pasta", "rice", "chicken"]);
   const [searchPhrase, setSearchPhrase] = useState("");
@@ -26,8 +27,8 @@ const SearchFoodPage = ({navigation}) => {
     fetchFoodData();
   }, []);
 
-  const handleCardPress = (name) => {
-    navigation.navigate('food_info', {name})
+  const handleCardPress = (name, imagei) => {
+    navigation.navigate('food_info', {name, imagei})
   };
 
   return (
@@ -54,4 +55,5 @@ const styles = StyleSheet.create({
 });
 
 export default SearchFoodPage;
+
 

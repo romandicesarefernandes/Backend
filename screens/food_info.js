@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ScrollView, Text, TouchableOpacity, Image} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Ring from '../ios/components/ring';
 
@@ -11,6 +11,7 @@ const FoodInfoPage = ({route}) => {
     };
 
     const { name } = route.params;
+    const { imagei } = route.params;
   
     return (
       <ScrollView>
@@ -24,6 +25,7 @@ const FoodInfoPage = ({route}) => {
           <View style={styles.spacer} />
         </View>
         <View style={styles.container}>
+        <Image source={{uri:imagei}} style={styles.image}/>
         </View>
       </ScrollView>
     );
@@ -67,8 +69,16 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     },
     spacer: {
-      width: 50,
+      width: 80,
     },
+    image: {
+        width: "100%",
+        height: 100,
+        borderRadius: 10,
+        resizeMode: "contain",
+        alignContent: "center"
+      },
   });
 
 export default FoodInfoPage;
+

@@ -1,34 +1,52 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, ScrollView, TouchableOpacity, Image, Text} from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { handleFood_search } from "../scripts/handle_register";
 import FoodCard from "../ios/components/food";
 import SearchBar from "../ios/components/SearchBar";
 
-const SearchFoodPage = ({navigation}) => {
+const SearchFoodPage = ({ navigation }) => {
   const [images, setImages] = useState([
-    "https://banner2.cleanpng.com/20180722/gfc/kisspng-user-profile-2018-in-sight-user-conference-expo-5b554c0968c377.0307553315323166814291.jpg",
-    "https://example.com/default-image2.jpg",
-    "https://example.com/default-image2.jpg",
-
+    "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1",
+    "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1",
+    "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1",
+    "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1",
+    "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1",
+    "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1",
+    "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1",
+    "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1",
+    "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1",
   ]);
-  const [names, setNames] = useState(["pasta", "rice", "chicken"]);
+  const [names, setNames] = useState(["testfood1", 
+                                      "testfood2", 
+                                      "testfood3",
+                                      "testfood4",
+                                      "testfood5",
+                                      "testfood6",
+                                      "testfood7",
+                                      "testfood8",
+                                      "testfood9"
+  ]);
   const [searchPhrase, setSearchPhrase] = useState("");
   const [clicked, setClicked] = useState(false);
 
-  useEffect(() => {
-    const fetchFoodData = async () => {
-      const foodData = await handleFood_search("pasta", "");
-      const newImages = foodData.map(item => item.food.image);
-      const newNames = foodData.map(item => item.food.knownAs);
-      setImages(newImages);
-      setNames(newNames);
-    };
+  const fetchFoodData = async (query) => {
+    const foodData = await handleFood_search(query, "");
+    const newImages = foodData.map((item) => item.food.image);
+    const newNames = foodData.map((item) => item.food.knownAs);
+    setImages(newImages);
+    setNames(newNames);
+  };
 
-    fetchFoodData();
+  useEffect(() => {
+    fetchFoodData("");
   }, []);
 
   const handleCardPress = (name, imagei) => {
-    navigation.navigate('food_info', {name, imagei})
+    navigation.navigate("food_info", { name, imagei });
+  };
+
+  const handleSearch = async () => {
+    await fetchFoodData(searchPhrase);
   };
 
   return (
@@ -38,7 +56,8 @@ const SearchFoodPage = ({navigation}) => {
           clicked={clicked}
           searchPhrase={searchPhrase}
           setSearchPhrase={setSearchPhrase}
-          setCLicked={setClicked}
+          setClicked={setClicked}
+          onSearch={handleSearch}
         />
         <FoodCard images={images} names={names} onCardPress={handleCardPress} />
       </View>

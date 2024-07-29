@@ -1,9 +1,8 @@
-// SearchBar.js
 import React from "react";
 import { StyleSheet, TextInput, View, Keyboard, Button } from "react-native";
 import { Feather, Entypo } from "@expo/vector-icons";
 
-const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setCLicked }) => {
+const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked, onSearch }) => {
   return (
     <View style={styles.container}>
       <View
@@ -25,9 +24,11 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setCLicked }) => {
           value={searchPhrase}
           onChangeText={setSearchPhrase}
           onFocus={() => {
-            setCLicked(true);
+            setClicked(true);
           }}
-          placeholderTextColor="grey"
+          onSubmitEditing={onSearch}
+          placeholderTextColor="gray"
+          
         />
         {/* cross Icon, depending on whether the search bar is clicked or not */}
         {clicked && (
@@ -49,7 +50,7 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setCLicked }) => {
             title="Cancel"
             onPress={() => {
               Keyboard.dismiss();
-              setCLicked(false);
+              setClicked(false);
             }}
           ></Button>
         </View>
@@ -57,6 +58,7 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setCLicked }) => {
     </View>
   );
 };
+
 export default SearchBar;
 
 // styles

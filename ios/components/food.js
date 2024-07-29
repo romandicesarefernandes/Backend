@@ -11,12 +11,12 @@ const FoodCard = ({ images, names, onCardPress }) => {
     for (let i = 0; i < images.length; i += 3) {
       const rowItems = images.slice(i, i + 3).map((image, index) => (
         <TouchableOpacity
-          key={index}
+          key={i+index}
           style={[styles.card, { width: cardWidth }]}
-          onPress={() => onCardPress(names[index], image)}
+          onPress={() => onCardPress(names[i+index], image)}
         >
           <Image source={{ uri: image }} style={styles.image} />
-          <Text style={styles.name}>{names[index]}</Text>
+          <Text style={styles.name}>{names[i+index]}</Text>
           <Text style={styles.calories}>500 cal</Text>
           <Text style={styles.calories}>Fats:30g</Text>
           <Text style={styles.calories}>Proteins:30g</Text>

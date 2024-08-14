@@ -37,27 +37,42 @@ const SearchFoodPage = ({ navigation }) => {
     { calories: 400, fats: 20, proteins: 20, carbs: 30 },
     { calories: 450, fats: 25, proteins: 25, carbs: 35 },
   ]);
+  const [ingredients, setIngredients] = useState([]);
   const [searchPhrase, setSearchPhrase] = useState("");
   const [clicked, setClicked] = useState(false);
 
   const fetchFoodData = async (query) => {
-    const foodData = await handleFood_search(query);
+    try {
+      const foodDataResponse = await handleFood_search(`${query}&from=0&to=20`);
+      
+      console.log("API Response:", foodDataResponse);
+      
+      if (foodDataResponse && foodDataResponse.data && Array.isArray(foodDataResponse.data)) {
+        const newImages = foodDataResponse.data.map(
+          (item) => item.image || "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1"
+        );
+        const newNames = foodDataResponse.data.map((item) => item.label);
+        const newNutrients = foodDataResponse.data.map((item) => ({
+          calories: item.nutrients.ENERC_KCAL || 0,
+          fats: item.nutrients.FAT || 0,
+          proteins: item.nutrients.PROCNT || 0,
+          carbs: item.nutrients.CHOCDF || 0,
+        }));
+        const newIngredients = foodDataResponse.data.map((item) => item.content_label ? item.content_label.split(";") : []);
   
-    if (foodData) {
-      const newImages = foodData.map((item) => item.food.image || "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1");
-      const newNames = foodData.map((item) => item.food.label);
-      const newNutrients = foodData.map((item) => ({
-        calories: item.food.nutrients.ENERC_KCAL || 0,
-        fats: item.food.nutrients.FAT || 0,
-        proteins: item.food.nutrients.PROCNT || 0,
-        carbs: item.food.nutrients.CHOCDF || 0,
-      }));
-  
-      setImages(newImages);
-      setNames(newNames);
-      setNutrients(newNutrients);
+        setImages(newImages);
+        setNames(newNames);
+        setNutrients(newNutrients);
+        setIngredients(newIngredients);
+      } else {
+        console.error("No data found in the response or data is not an array.");
+      }
+    } catch (error) {
+      console.error("Error fetching food data:", error);
     }
   };
+  
+  
 
   useEffect(() => {
     fetchFoodData("");
@@ -66,6 +81,7 @@ const SearchFoodPage = ({ navigation }) => {
   const handleCardPress = async (name, image) => {
     const index = names.indexOf(name);
     let nutrientData = nutrients[index];
+    let ingredientData = ingredients[index];
   
     if (!nutrientData) {
       const response = await handleFood_request_nutrients(name);
@@ -77,12 +93,13 @@ const SearchFoodPage = ({ navigation }) => {
       });
     }
   
-    navigation.navigate("food_info", { name, imagei: image, nutrients: nutrientData });
+    navigation.navigate("food_info", { name, imagei: image, nutrients: nutrientData, ingredients: ingredientData });
   };
 
   const handleSearch = async () => {
     await fetchFoodData(searchPhrase);
   };
+  
 
   return (
     <ScrollView>

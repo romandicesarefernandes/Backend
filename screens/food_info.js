@@ -10,13 +10,14 @@ const FoodInfoPage = ({ route }) => {
     navigation.goBack();
   };
 
-  const { name, imagei, nutrients} = route.params;
+  const { name, imagei, nutrients, ingredients } = route.params;
+
 
   const totalMacros = nutrients.fats + nutrients.proteins + nutrients.carbs;
   const proteinPercentage = (nutrients.proteins / totalMacros) * 100;
   const fatPercentage = (nutrients.fats / totalMacros) * 100;
   const carbPercentage = (nutrients.carbs / totalMacros) * 100;
-  const dailyIntakePercentage = (nutrients.calories/2000) * 100;
+  const dailyIntakePercentage =Math.round((nutrients.calories/2000) * 100);
   
 
   return (
@@ -79,7 +80,7 @@ const FoodInfoPage = ({ route }) => {
           <View style={styles.separator} />
           <View style={styles.section}>
             <Text style={styles.boldText}>Calories</Text>
-            <Text style={styles.largeText}>{nutrients.calories}</Text>
+            <Text style={styles.largeText}>{Math.round(nutrients.calories)}</Text>
           </View>
           <View style={styles.separator} />
           <View style={styles.section}>
@@ -87,7 +88,7 @@ const FoodInfoPage = ({ route }) => {
           </View>
           <View style={styles.nutrientRow}>
             <Text style={styles.boldText}>Total Fat</Text>
-            <Text>{nutrients.fats}g</Text>
+            <Text>{Math.round(nutrients.fats)}g</Text>
             <Text>{Math.round((nutrients.fats / 78) * 100)}%</Text>
           </View>
           <View style={styles.subNutrientRow}>
@@ -109,7 +110,7 @@ const FoodInfoPage = ({ route }) => {
           <View style={styles.separator} />
           <View style={styles.nutrientRow}>
             <Text style={styles.boldText}>Total Carbohydrate</Text>
-            <Text>{nutrients.carbs}g</Text>
+            <Text>{Math.round(nutrients.carbs)}g</Text>
             <Text>{Math.round((nutrients.carbs / 275) * 100)}%</Text>
           </View>
           <View style={styles.subNutrientRow}>
@@ -122,7 +123,7 @@ const FoodInfoPage = ({ route }) => {
           <View style={styles.separator} />
           <View style={styles.nutrientRow}>
             <Text style={styles.boldText}>Protein</Text>
-            <Text>{nutrients.proteins}g</Text>
+            <Text>{Math.round(nutrients.proteins)}g</Text>
           </View>
           <View style={styles.separator} />
           <Text style={styles.note}>*Percent Daily Values are based on a 2,000 calorie diet.</Text>
@@ -132,6 +133,15 @@ const FoodInfoPage = ({ route }) => {
         <View style={styles.titleleft}>
           <Text style={styles.titlepref}>Ingredients</Text>
         </View>
+        <View style={styles.ingredientsContainer}>
+        {ingredients && ingredients.length > 0 ? (
+          <Text style={styles.ingredientText}>{ingredients.join(', ')}</Text>
+        ) : (
+          <Text>No ingredients available</Text>
+        )}
+      </View>
+      <View style={styles.border} />
+
       </View>
     </ScrollView>
   );
@@ -282,6 +292,18 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     marginRight: 6,
   },
+  ingredientsContainer: {
+    marginRight: 20,
+    marginBottom: 20,
+    alignItems: 'center'
+  },
+  
+  ingredientText: {
+    fontSize: 16,
+    marginBottom: 5,
+    alignItems: 'center'
+  }
+  
 });
 
 export default FoodInfoPage;

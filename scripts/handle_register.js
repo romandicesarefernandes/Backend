@@ -43,14 +43,24 @@ export function handleLogin(email, password) {
       console.error("Error:", error);
     });
 }
-export async function handleFood_search(ingr, brand) {
+
+export async function handleFood_search(ingredient, brand = '') {
   try {
-    const url = new URL("http://192.168.1.24:5000/api/food_search");
-    const params = { ingr, brand };
-    console.log(params);
+    console.log("Fetching food data for query:", ingredient); // Corrected variable name
+
+    const url = new URL("http://127.0.0.1:8000/food/search");
+    const params = { ingredient }; // Use ingredient directly
+
+    // Only append the brand parameter if it's not an empty string
+    if (brand) {
+      params.brand = brand;
+    }
+
     Object.keys(params).forEach((key) =>
       url.searchParams.append(key, params[key])
     );
+
+    console.log("Fetching data from:", url.toString());
 
     const response = await fetch(url, {
       method: "GET",
@@ -63,39 +73,47 @@ export async function handleFood_search(ingr, brand) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const data = await response.json(); // Use text() to get the response as a string
+    const data = await response.json();
+    console.log("Data received:", data);
 
-    return data; // Return the string data
+    return data;
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error during API call:", error);
     return null;
   }
 }
 
+
+
+
+
+
 export async function handleFood_request_nutrients(ingr) {
   try {
-    const url = new URL("http://192.168.1.24:5000/api/food_search");
+    const url = new URL("http://127.0.0.1:8000/food/nutrients"); // Ensure the port is correct
     const params = { ingr };
     Object.keys(params).forEach((key) =>
       url.searchParams.append(key, params[key])
     );
 
     const response = await fetch(url, {
-      method: "GET",
+      method: "POST", // Make sure it's POST if the FastAPI expects POST, otherwise GET
       headers: {
         "Content-Type": "application/json",
       },
+      body: JSON.stringify(params), // Add this if you're using POST method
     });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const data = await response.text(); // Use text() to get the response as a string
-    console.log(data);
-    return data; // Return the string data
+    const data = await response.json(); // Assuming JSON response
+
+    return data;
   } catch (error) {
     console.error("Error:", error);
     return null;
   }
 }
+

@@ -46,12 +46,11 @@ export function handleLogin(email, password) {
 
 export async function handleFood_search(ingredient, brand = '') {
   try {
-    console.log("Fetching food data for query:", ingredient); // Corrected variable name
+    console.log("Fetching food data for query:", ingredient);
 
     const url = new URL("http://127.0.0.1:8000/food/search");
-    const params = { ingredient }; // Use ingredient directly
+    const params = { ingredient };
 
-    // Only append the brand parameter if it's not an empty string
     if (brand) {
       params.brand = brand;
     }

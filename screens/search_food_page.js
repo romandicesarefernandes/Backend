@@ -43,7 +43,7 @@ const SearchFoodPage = ({ navigation }) => {
 
   const fetchFoodData = async (query) => {
     try {
-      const foodDataResponse = await handleFood_search(`${query}&from=0&to=20`);
+      const foodDataResponse = await handleFood_search(query);
       
       console.log("API Response:", foodDataResponse);
       

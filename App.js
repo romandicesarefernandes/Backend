@@ -13,6 +13,7 @@ import patientpage from "./screens/patientpage";
 import questions from "./screens/questionspage";
 import SearchFoodPage from "./screens/search_food_page";
 import foodinfopage from "./screens/food_info";
+import fullnutritionpage from "./screens/full_nutiriton_report";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -63,6 +64,12 @@ export default function App() {
         <Stack.Screen
           name="food_info"
           component={foodinfopage}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="full_nutrition_report"
+          component={fullnutritionpage}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

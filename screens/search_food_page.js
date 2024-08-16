@@ -38,6 +38,18 @@ const SearchFoodPage = ({ navigation }) => {
     { calories: 450, fats: 25, proteins: 25, carbs: 35 },
   ]);
   const [ingredients, setIngredients] = useState([]);
+  const [brands, setBrands] = useState([
+    "Brand A",
+    "Brand B",
+    "Brand C",
+    "Brand D",
+    "Brand E",
+    "Brand F",
+    "Brand G",
+    "Brand H",
+    "Brand I"
+  ]);
+  const [servingSizes, setServingSize] = useState([]);
   const [searchPhrase, setSearchPhrase] = useState("");
   const [clicked, setClicked] = useState(false);
 
@@ -57,14 +69,20 @@ const SearchFoodPage = ({ navigation }) => {
           fats: item.nutrients.FAT || 0,
           proteins: item.nutrients.PROCNT || 0,
           carbs: item.nutrients.CHOCDF || 0,
+          fibers: item.nutrients.FIBTG || 0,
         }));
+        const newBrands = foodDataResponse.data.map((item) => item.brand || "Generic Brand");
+        const newServingSize = foodDataResponse.data.map((item) => item.serving_sizes || 100);
         const newIngredients = foodDataResponse.data.map((item) => item.content_label ? item.content_label.split(";") : []);
   
         setImages(newImages);
         setNames(newNames);
         setNutrients(newNutrients);
         setIngredients(newIngredients);
-      } else {
+        setBrands(newBrands);
+        setServingSize(newServingSize);
+      } 
+      else {
         console.error("No data found in the response or data is not an array.");
       }
     } catch (error) {
@@ -75,25 +93,17 @@ const SearchFoodPage = ({ navigation }) => {
   
 
   useEffect(() => {
-    fetchFoodData("");
+    fetchFoodData("Pasta");
   }, []);
 
   const handleCardPress = async (name, image) => {
     const index = names.indexOf(name);
     let nutrientData = nutrients[index];
     let ingredientData = ingredients[index];
+    let brand = brands[index];
+    let servingSize = servingSizes[index];
   
-    if (!nutrientData) {
-      const response = await handleFood_request_nutrients(name);
-      nutrientData = JSON.parse(response);
-      setNutrients((prevNutrients) => {
-        const newNutrients = [...prevNutrients];
-        newNutrients[index] = nutrientData;
-        return newNutrients;
-      });
-    }
-  
-    navigation.navigate("food_info", { name, imagei: image, nutrients: nutrientData, ingredients: ingredientData });
+    navigation.navigate("food_info", {brand, name, imagei: image, nutrients: nutrientData, ingredients: ingredientData, servingSize});
   };
 
   const handleSearch = async () => {
@@ -103,7 +113,7 @@ const SearchFoodPage = ({ navigation }) => {
 
   return (
     <ScrollView>
-      <View style={styles.container}>
+    <View style={styles.header}>
         <SearchBar
           clicked={clicked}
           searchPhrase={searchPhrase}
@@ -111,7 +121,9 @@ const SearchFoodPage = ({ navigation }) => {
           setClicked={setClicked}
           onSearch={handleSearch}
         />
-        <FoodCard images={images} names={names} nutrients={nutrients} onCardPress={handleCardPress} />
+      </View>
+      <View style={styles.container}>
+      <FoodCard images={images} names={names} nutrients={nutrients} onCardPress={handleCardPress} />
       </View>
     </ScrollView>
   );
@@ -122,6 +134,13 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 50,
     alignItems: "center",
+  },
+  header: {
+    backgroundColor: '#007260',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    height: 150,
   },
 });
 

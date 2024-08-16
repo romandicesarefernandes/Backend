@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, Text, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, ScrollView, Text, TouchableOpacity, Image, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import FoodRing from '../ios/components/foodring';
+import COLORS from '../constants/colors';
 
 const FoodInfoPage = ({ route }) => {
   const navigation = useNavigation();
@@ -10,30 +11,33 @@ const FoodInfoPage = ({ route }) => {
     navigation.goBack();
   };
 
-  const { name, imagei, nutrients, ingredients } = route.params;
+  const nutiritonreportclicked = () => {
+    navigation.navigate("full_nutrition_report", {nutrients, name, servingSize, dailyIntakePercentage});
+  };
 
+  const { name, imagei, nutrients, ingredients, brand, servingSize} = route.params;
 
   const totalMacros = nutrients.fats + nutrients.proteins + nutrients.carbs;
   const proteinPercentage = (nutrients.proteins / totalMacros) * 100;
   const fatPercentage = (nutrients.fats / totalMacros) * 100;
   const carbPercentage = (nutrients.carbs / totalMacros) * 100;
-  const dailyIntakePercentage =Math.round((nutrients.calories/2000) * 100);
-  
+  const dailyIntakePercentage = Math.round((nutrients.calories / 2000) * 100);
 
   return (
     <ScrollView>
-      <View style={styles.row}>
+      <View style={styles.header}>
         <TouchableOpacity style={styles.button} onPress={backbtnclicked}>
           <Text style={styles.buttonText}>Back</Text>
         </TouchableOpacity>
+      </View>
+      <View style={styles.row}>
+        <Image source={{ uri: imagei }} style={styles.image} />
         <View style={styles.titleContainer}>
           <Text style={styles.Title}>{name}</Text>
+          {brand && <Text style={styles.brandText}>{brand}</Text>}
         </View>
-        <View style={styles.spacer}/>
       </View>
-
       <View style={styles.container}>
-        <Image source={{ uri: imagei }} style={styles.image} />
         <View style={styles.border} />
         <View style={styles.row}>
           <View style={styles.leftContent}>
@@ -64,69 +68,55 @@ const FoodInfoPage = ({ route }) => {
         </View>
         <View style={styles.border} />
 
-
         <View style={styles.titleleft}>
-          <Text style={styles.titlepref}>Nutrition Label</Text>
-        </View>
-        <View style={styles.nutritionLabel}>
-          <Text style={styles.labelTitle}>Nutrition Facts</Text>
-          <View style={styles.separator} />
-          <Text style={styles.servingSize}>Serving Size 1 cup (228g)</Text>
-          <Text style={styles.servingsPerContainer}>Servings Per Container 2</Text>
-          <View style={styles.separator} />
-          <View style={styles.section}>
-            <Text style={styles.boldText}>Amount Per Serving</Text>
+          <Text style={styles.titlepref}>Nutrition</Text>
+          <View style={styles.nutrientContainer}>
+            <View style={styles.row}>
+              <Text style={styles.largeCaloriesText}>{Math.round(nutrients.calories)} cal</Text>
+              <Text style={styles.servingSizeText}>Serving Size: ({servingSize}g)</Text>
+            </View>
+
+            <View style={styles.separator} />
+
+            <View style={styles.nutritionInfo}>
+              <View style={styles.nutrientRow}>
+                <Text style={styles.boldText}>Total Fat</Text>
+                <Text>{Math.round(nutrients.fats)}g</Text>
+              </View>
+              <View style={styles.subNutrientRow}>
+                <Text>Saturated Fat N/Ag</Text>
+              </View>
+              <View style={styles.separator} />
+              <View style={styles.nutrientRow}>
+                <Text style={styles.boldText}>Cholesterol</Text>
+                <Text>N/A mg</Text>
+              </View>
+              <View style={styles.separator} />
+              <View style={styles.nutrientRow}>
+                <Text style={styles.boldText}>Sodium</Text>
+                <Text>N/A mg</Text>
+              </View>
+              <View style={styles.separator} />
+              <View style={styles.nutrientRow}>
+                <Text style={styles.boldText}>Total Carbohydrate</Text>
+                <Text>{Math.round(nutrients.carbs)}g</Text>
+              </View>
+              <View style={styles.subNutrientRow}>
+                <Text>Dietary Fiber {Math.round(nutrients.fibers)}g</Text>
+              </View>
+              <View style={styles.subNutrientRow}>
+                <Text>Sugars 5g</Text>
+              </View>
+              <View style={styles.separator} />
+              <View style={styles.nutrientRow}>
+                <Text style={styles.boldText}>Protein</Text>
+                <Text>{Math.round(nutrients.proteins)}g</Text>
+              </View>
+            </View>
           </View>
-          <View style={styles.separator} />
-          <View style={styles.section}>
-            <Text style={styles.boldText}>Calories</Text>
-            <Text style={styles.largeText}>{Math.round(nutrients.calories)}</Text>
-          </View>
-          <View style={styles.separator} />
-          <View style={styles.section}>
-            <Text style={styles.boldText}>% Daily Value*</Text>
-          </View>
-          <View style={styles.nutrientRow}>
-            <Text style={styles.boldText}>Total Fat</Text>
-            <Text>{Math.round(nutrients.fats)}g</Text>
-            <Text>{Math.round((nutrients.fats / 78) * 100)}%</Text>
-          </View>
-          <View style={styles.subNutrientRow}>
-            <Text>Saturated Fat {nutrients.satfats}g</Text>
-            <Text>10%</Text>
-          </View>
-          <View style={styles.separator} />
-          <View style={styles.nutrientRow}>
-            <Text style={styles.boldText}>Cholesterol</Text>
-            <Text>30mg</Text>
-            <Text>10%</Text>
-          </View>
-          <View style={styles.separator} />
-          <View style={styles.nutrientRow}>
-            <Text style={styles.boldText}>Sodium</Text>
-            <Text>300mg</Text>
-            <Text>13%</Text>
-          </View>
-          <View style={styles.separator} />
-          <View style={styles.nutrientRow}>
-            <Text style={styles.boldText}>Total Carbohydrate</Text>
-            <Text>{Math.round(nutrients.carbs)}g</Text>
-            <Text>{Math.round((nutrients.carbs / 275) * 100)}%</Text>
-          </View>
-          <View style={styles.subNutrientRow}>
-            <Text>Dietary Fiber 3g</Text>
-            <Text>12%</Text>
-          </View>
-          <View style={styles.subNutrientRow}>
-            <Text>Sugars 5g</Text>
-          </View>
-          <View style={styles.separator} />
-          <View style={styles.nutrientRow}>
-            <Text style={styles.boldText}>Protein</Text>
-            <Text>{Math.round(nutrients.proteins)}g</Text>
-          </View>
-          <View style={styles.separator} />
-          <Text style={styles.note}>*Percent Daily Values are based on a 2,000 calorie diet.</Text>
+          <TouchableOpacity style={styles.fullNutritionBtn} onPress={nutiritonreportclicked}>
+          <Text style={styles.nutritionBtnText}>View Full Nutrition Label </Text>
+        </TouchableOpacity>
         </View>
 
         <View style={styles.border} />
@@ -134,24 +124,38 @@ const FoodInfoPage = ({ route }) => {
           <Text style={styles.titlepref}>Ingredients</Text>
         </View>
         <View style={styles.ingredientsContainer}>
-        {ingredients && ingredients.length > 0 ? (
-          <Text style={styles.ingredientText}>{ingredients.join(', ')}</Text>
-        ) : (
-          <Text>No ingredients available</Text>
-        )}
-      </View>
-      <View style={styles.border} />
-
+          {ingredients && ingredients.length > 0 ? (
+            <Text style={styles.ingredientText}>{ingredients.join(', ')}</Text>
+          ) : (
+            <Text>No ingredients available</Text>
+          )}
+        </View>
+        <View style={styles.border} />
       </View>
     </ScrollView>
   );
 };
 
+
 const styles = StyleSheet.create({
+  header: {
+    backgroundColor: '#007260',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    height: 100,
+  },
+  brandText: {
+    fontSize: 20,
+    color: 'grey',
+    marginTop: 5,
+  },
   container: {
     flex: 1,
     marginTop: 50,
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20, 
   },
   nutritionLabel: {
     width: '90%',
@@ -197,19 +201,69 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginLeft: 20,
   },
+  nutrientContainer: {
+    padding: 20,
+    backgroundColor: '#f9f9f9',
+    borderRadius: 10,
+    marginTop: 20,
+    width: '90%',
+    alignSelf: 'center',
+    maxWidth: 360
+  },
+  
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  
+  servingSizeText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  
+  largeCaloriesText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginRight: 70
+  },
+  
+  separator: {
+    height: 1,
+    backgroundColor: '#ccc',
+    marginVertical: 10,
+  },
+  
+  nutritionInfo: {
+    marginTop: 10,
+    
+  },
+  fullNutritionBtn: {
+    marginTop: 20,
+    alignItems: 'start',
+    justifyContent: 'start',
+    width: 'auto',
+    height: 50,
+  },
+  nutritionBtnText: {
+    color: 'grey',
+    fontSize: 20,
+    textDecorationLine: 'underline',
+  },
   note: {
     fontSize: 12,
     marginTop: 10,
   },
   border: {
-    marginTop: 50,
+    marginTop: 5,
     width: '95%',
     borderBottomWidth: 1,
     borderBottomColor: '#cbcbcb',
   },
   Title: {
-    marginTop: 70,
-    fontSize: 50,
+    marginTop: 20,
+    marginRight: 40,
+    fontSize: 40,
   },
   titlepref: {
     color: 'black',
@@ -218,26 +272,22 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   button: {
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderColor: 'black',
-    borderWidth: 1,
-    borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 70,
+    marginTop: 40,
     marginBottom: 10,
     marginLeft: 20,
     width: 70,
     height: 50,
   },
   buttonText: {
-    color: 'black',
+    color: 'white',
+    fontSize: 24
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around', // Distribute space evenly
+    justifyContent: 'space-around',
     width: '100%',
   },
   titleContainer: {
@@ -248,31 +298,33 @@ const styles = StyleSheet.create({
     width: 80,
   },
   image: {
-    width: '100%',
+    width: 100,
     height: 100,
     borderRadius: 10,
     resizeMode: 'contain',
-    alignContent: 'center',
+    alignContent: 'start',
+    marginLeft: 20,
+    marginTop: 20
   },
   leftContent: {
     flex: 1,
     alignItems: 'start',
-    marginTop: 70,
-    marginBottom: 10,
+    marginTop: 30,
+    marginBottom: 20,
     marginLeft: 20,
     paddingRight: 20,
   },
   middleContent: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 70,
-    marginBottom: 10,
+    marginTop: 30,
+    marginBottom: 20,
   },
   rightContent: {
     flex: 1,
     alignItems: 'end',
-    marginTop: 70,
-    marginBottom: 10,
+    marginTop: 30,
+    marginBottom: 20,
     marginRight: 20,
   },
   titleleft: {
@@ -295,7 +347,8 @@ const styles = StyleSheet.create({
   ingredientsContainer: {
     marginRight: 20,
     marginBottom: 20,
-    alignItems: 'center'
+    alignItems: 'start',
+    padding: 20,
   },
   
   ingredientText: {

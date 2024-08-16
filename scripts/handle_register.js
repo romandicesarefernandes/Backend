@@ -1,5 +1,5 @@
 export function handleRegister(name, password, phoneNumber, email) {
-  fetch("http://192.168.1.24:5000/api/register", {
+  fetch("http://127.0.0.1:8000/auth/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -22,7 +22,7 @@ export function handleRegister(name, password, phoneNumber, email) {
 }
 
 export function handleLogin(email, password) {
-  return fetch("http://192.168.1.24:5000/api/login", {
+  return fetch("http://127.0.0.1:8000/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -58,6 +58,7 @@ export async function handleFood_search(ingredient, brand = '') {
     Object.keys(params).forEach((key) =>
       url.searchParams.append(key, params[key])
     );
+    
 
     console.log("Fetching data from:", url.toString());
 

@@ -21,9 +21,6 @@ const FoodCard = ({ images, names, nutrients, onCardPress }) => {
           {nutrients[i + index] && (
             <>
               <Text style={styles.calories}>Cals: {Math.round(nutrients[i + index].calories)}</Text>
-              <Text style={styles.calories}>Fats: {Math.round(nutrients[i + index].fats)}g</Text>
-              <Text style={styles.calories}>Proteins: {Math.round(nutrients[i + index].proteins)}g</Text>
-              <Text style={styles.calories}>Carbs: {Math.round(nutrients[i + index].carbs)}g</Text>
             </>
           )}
         </TouchableOpacity>

@@ -1,57 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView , Text} from "react-native";
 import { handleFood_search, handleFood_request_nutrients} from "../scripts/handle_register";
 import FoodCard from "../ios/components/food";
 import SearchBar from "../ios/components/SearchBar";
 
 const SearchFoodPage = ({ navigation }) => {
-  const [images, setImages] = useState([
-    "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1",
-    "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1",
-    "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1",
-    "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1",
-    "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1",
-    "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1",
-    "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1",
-    "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1",
-    "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1",
-  ]);
-  const [names, setNames] = useState(["testfood1", 
-                                      "testfood2", 
-                                      "testfood3",
-                                      "testfood4",
-                                      "testfood5",
-                                      "testfood6",
-                                      "testfood7",
-                                      "testfood8",
-                                      "testfood9"
-  ]);
-  const [nutrients, setNutrients] = useState([
-    { calories: 1260, fats: 45, proteins: 29, carbs: 167 },
-    { calories: 400, fats: 20, proteins: 20, carbs: 30 },
-    { calories: 450, fats: 25, proteins: 25, carbs: 35 },
-    { calories: 300, fats: 10, proteins: 10, carbs: 20 },
-    { calories: 600, fats: 35, proteins: 35, carbs: 45 },
-    { calories: 550, fats: 30, proteins: 30, carbs: 40 },
-    { calories: 500, fats: 30, proteins: 30, carbs: 40 },
-    { calories: 400, fats: 20, proteins: 20, carbs: 30 },
-    { calories: 450, fats: 25, proteins: 25, carbs: 35 },
-  ]);
+  const [images, setImages] = useState([]);
+  const [names, setNames] = useState([]);
+  const [nutrients, setNutrients] = useState([]);
   const [ingredients, setIngredients] = useState([]);
-  const [brands, setBrands] = useState([
-    "Brand A",
-    "Brand B",
-    "Brand C",
-    "Brand D",
-    "Brand E",
-    "Brand F",
-    "Brand G",
-    "Brand H",
-    "Brand I"
-  ]);
+  const [brands, setBrands] = useState([]);
   const [servingSizes, setServingSize] = useState([]);
   const [searchPhrase, setSearchPhrase] = useState("");
   const [clicked, setClicked] = useState(false);
+  const [noResults, setNoResults] = useState(false);
+
 
   const fetchFoodData = async (query) => {
     try {
@@ -59,7 +22,7 @@ const SearchFoodPage = ({ navigation }) => {
       
       console.log("API Response:", foodDataResponse);
       
-      if (foodDataResponse && foodDataResponse.data && Array.isArray(foodDataResponse.data)) {
+      if (foodDataResponse && foodDataResponse.data && Array.isArray(foodDataResponse.data) && foodDataResponse.data.length > 0) {
         const newImages = foodDataResponse.data.map(
           (item) => item.image || "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1"
         );
@@ -81,19 +44,23 @@ const SearchFoodPage = ({ navigation }) => {
         setIngredients(newIngredients);
         setBrands(newBrands);
         setServingSize(newServingSize);
+        setNoResults(false);
       } 
       else {
         console.error("No data found in the response or data is not an array.");
+        setNoResults(true);
       }
     } catch (error) {
       console.error("Error fetching food data:", error);
+      setNoResults(true); 
     }
   };
   
   
+  
 
   useEffect(() => {
-    fetchFoodData("Pasta");
+    fetchFoodData("Pasta and Beef and French Fries");
   }, []);
 
   const handleCardPress = async (name, image) => {
@@ -113,27 +80,39 @@ const SearchFoodPage = ({ navigation }) => {
 
   return (
     <ScrollView>
-    <View style={styles.header}>
-        <SearchBar
-          clicked={clicked}
-          searchPhrase={searchPhrase}
-          setSearchPhrase={setSearchPhrase}
-          setClicked={setClicked}
-          onSearch={handleSearch}
-        />
+      <View style={styles.header}>
+          <SearchBar
+            clicked={clicked}
+            searchPhrase={searchPhrase}
+            setSearchPhrase={setSearchPhrase}
+            setClicked={setClicked}
+            onSearch={handleSearch}
+          />
       </View>
       <View style={styles.container}>
-      <FoodCard images={images} names={names} nutrients={nutrients} onCardPress={handleCardPress} />
+        <Text style={styles.title}>Results:</Text>
+        {noResults ? (
+          <Text style={styles.noResultsText}>No results found. Please try a different search term.</Text>
+        ) : (
+          <FoodCard images={images} names={names} nutrients={nutrients} brands={brands} onCardPress={handleCardPress} />
+        )}
       </View>
     </ScrollView>
   );
+  
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 50,
+    marginTop: 20,
     alignItems: "center",
+  },
+  title: {
+    alignSelf: 'start',
+    fontSize: 24,
+    marginLeft: 20,
+    color: "#636363",
   },
   header: {
     backgroundColor: '#007260',
@@ -142,7 +121,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     height: 150,
   },
+  noResultsText: {
+    fontSize: 18,
+    color: "black",
+    marginTop: 20,
+    margin: 20
+  },
 });
+
 
 export default SearchFoodPage;
 

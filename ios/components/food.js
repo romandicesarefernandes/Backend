@@ -3,7 +3,7 @@ import React from "react";
 import { StyleSheet, View, TouchableOpacity, Image, Text, Dimensions } from "react-native";
 import COLORS from "../../constants/colors";
 
-const FoodCard = ({ images, names, nutrients, onCardPress }) => {
+const FoodCard = ({ images, names, nutrients, onCardPress, brands }) => {
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = screenWidth / 3 - 16;
 
@@ -11,19 +11,20 @@ const FoodCard = ({ images, names, nutrients, onCardPress }) => {
     const rows = [];
     for (let i = 0; i < images.length; i += 3) {
       const rowItems = images.slice(i, i + 3).map((image, index) => (
-        <TouchableOpacity
-          key={i + index}
-          style={[styles.card, { width: cardWidth }]}
-          onPress={() => onCardPress(names[i + index], image)}
-        >
-          <Image source={{ uri: image }} style={styles.image} />
+      <TouchableOpacity
+        key={i + index}
+        style={[styles.card, { width: cardWidth }]}
+        onPress={() => onCardPress(names[i + index], image)}
+      >
+        <Image source={{ uri: image }} style={styles.image} />
+        <View style={styles.textContainer}>
           <Text style={styles.name}>{names[i + index]}</Text>
+          <Text style={styles.calories}>{brands[i + index]}</Text>
           {nutrients[i + index] && (
-            <>
-              <Text style={styles.calories}>Cals: {Math.round(nutrients[i + index].calories)}</Text>
-            </>
+            <Text style={styles.calories}>Cals: {Math.round(nutrients[i + index].calories)}</Text>
           )}
-        </TouchableOpacity>
+        </View>
+      </TouchableOpacity>
       ));
       rows.push(
         <View key={i} style={styles.row}>
@@ -54,27 +55,38 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255, 255, 255, 0.2)",
     shadowOffset: { width: 1, height: 1 },
     shadowColor: "rgba(255, 255, 255, 0.0)",
-    borderWidth: 0.7,
-    borderColor: COLORS.primary,
+    borderWidth: 0.2,
+    borderColor: 'grey',
     shadowOpacity: 0.3,
     shadowRadius: 2,
     marginHorizontal: 4,
     marginVertical: 6,
-    padding: 20,
+    overflow: 'hidden',
+    height: 200,
   },
   image: {
-    width: "100%",
-    height: 90,
+    flex: 1,
     borderRadius: 10,
-    resizeMode: "contain"
+    resizeMode: "cover",
+  },
+  textContainer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    alignItems: "center", 
   },
   name: {
-    marginTop: 5,
-    textAlign: "center",
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
   },
   calories: {
-    textAlign: "center",
-    fontSize: 11,
+    fontSize: 14,
+    color: "#fff",
   },
 });
 

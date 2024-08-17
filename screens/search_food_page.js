@@ -5,11 +5,15 @@ import FoodCard from "../ios/components/food";
 import SearchBar from "../ios/components/SearchBar";
 
 const SearchFoodPage = ({ navigation }) => {
-  const [images, setImages] = useState([]);
-  const [names, setNames] = useState([]);
+  const [images, setImages] = useState([
+    "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1"
+  ]);
+  const [names, setNames] = useState([
+    "SomethingTest"
+  ]);
   const [nutrients, setNutrients] = useState([]);
   const [ingredients, setIngredients] = useState([]);
-  const [brands, setBrands] = useState([]);
+  const [brands, setBrands] = useState(["generic"]);
   const [servingSizes, setServingSize] = useState([]);
   const [searchPhrase, setSearchPhrase] = useState("");
   const [clicked, setClicked] = useState(false);
@@ -60,7 +64,7 @@ const SearchFoodPage = ({ navigation }) => {
   
 
   useEffect(() => {
-    fetchFoodData("Pasta and Beef and French Fries");
+    fetchFoodData("Pasta and Cheese and Beef and Rice and Apple");
   }, []);
 
   const handleCardPress = async (name, image) => {
@@ -79,25 +83,30 @@ const SearchFoodPage = ({ navigation }) => {
   
 
   return (
-    <ScrollView>
+    <View>
       <View style={styles.header}>
-          <SearchBar
-            clicked={clicked}
-            searchPhrase={searchPhrase}
-            setSearchPhrase={setSearchPhrase}
-            setClicked={setClicked}
-            onSearch={handleSearch}
-          />
+        <SearchBar
+          clicked={clicked}
+          searchPhrase={searchPhrase}
+          setSearchPhrase={setSearchPhrase}
+          setClicked={setClicked}
+          onSearch={handleSearch}
+        />
       </View>
-      <View style={styles.container}>
-        <Text style={styles.title}>Results:</Text>
-        {noResults ? (
-          <Text style={styles.noResultsText}>No results found. Please try a different search term.</Text>
-        ) : (
-          <FoodCard images={images} names={names} nutrients={nutrients} brands={brands} onCardPress={handleCardPress} />
-        )}
-      </View>
-    </ScrollView>
+      <ScrollView>
+        <View style={styles.container}>
+          <Text style={styles.title}>Results:</Text>
+
+          {noResults ? (
+            <Text style={styles.noResultsText}>No results found. Please try a different search term.</Text>
+          ) : (
+            <FoodCard images={images} names={names} nutrients={nutrients} brands={brands} onCardPress={handleCardPress} />
+          )}
+          
+          <View style={styles.spacer}/>
+        </View>
+      </ScrollView>
+    </View>
   );
   
 };
@@ -127,10 +136,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
     margin: 20
   },
+  spacer: {
+    height: 250,
+  },
 });
 
 
 export default SearchFoodPage;
-
 
 

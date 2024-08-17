@@ -1,4 +1,3 @@
-// FoodCard.js
 import React from "react";
 import { StyleSheet, View, TouchableOpacity, Image, Text, Dimensions } from "react-native";
 import COLORS from "../../constants/colors";
@@ -11,20 +10,41 @@ const FoodCard = ({ images, names, nutrients, onCardPress, brands }) => {
     const rows = [];
     for (let i = 0; i < images.length; i += 3) {
       const rowItems = images.slice(i, i + 3).map((image, index) => (
-      <TouchableOpacity
-        key={i + index}
-        style={[styles.card, { width: cardWidth }]}
-        onPress={() => onCardPress(names[i + index], image)}
-      >
-        <Image source={{ uri: image }} style={styles.image} />
-        <View style={styles.textContainer}>
-          <Text style={styles.name}>{names[i + index]}</Text>
-          <Text style={styles.calories}>{brands[i + index]}</Text>
-          {nutrients[i + index] && (
-            <Text style={styles.calories}>Cals: {Math.round(nutrients[i + index].calories)}</Text>
-          )}
-        </View>
-      </TouchableOpacity>
+        <TouchableOpacity
+          key={i + index}
+          style={[styles.card, { width: cardWidth, height: cardWidth * 1.4 }]}
+          onPress={() => onCardPress(names[i + index], image)}
+        >
+          <Image source={{ uri: image }} style={styles.image} />
+          <View style={styles.textContainer}>
+            <Text 
+              style={styles.name} 
+              adjustsFontSizeToFit 
+              numberOfLines={1} 
+              minimumFontScale={0.7}
+            >
+              {names[i + index]}
+            </Text>
+            <Text 
+              style={styles.calories} 
+              adjustsFontSizeToFit 
+              numberOfLines={1} 
+              minimumFontScale={0.7}
+            >
+              {brands[i + index]}
+            </Text>
+            {nutrients[i + index] && (
+              <Text 
+                style={styles.calories} 
+                adjustsFontSizeToFit 
+                numberOfLines={1} 
+                minimumFontScale={0.7}
+              >
+                Cals: {Math.round(nutrients[i + index].calories)}
+              </Text>
+            )}
+          </View>
+        </TouchableOpacity>
       ));
       rows.push(
         <View key={i} style={styles.row}>
@@ -41,13 +61,14 @@ const FoodCard = ({ images, names, nutrients, onCardPress, brands }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column",
-    alignItems: "flex-start",
+    paddingHorizontal: 8,
   },
   row: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 10,
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    flexWrap: "wrap",
+    width: "100%",
   },
   card: {
     borderRadius: 10,
@@ -60,9 +81,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 2,
     marginHorizontal: 4,
-    marginVertical: 6,
+    marginVertical: 8,
     overflow: 'hidden',
-    height: 200,
+    width: Dimensions.get("window").width / 3 - 12,
   },
   image: {
     flex: 1,
@@ -77,18 +98,23 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
     paddingVertical: 5,
     paddingHorizontal: 10,
-    alignItems: "center", 
+    alignItems: "center",
   },
   name: {
     color: "#fff",
     fontWeight: "bold",
     fontSize: 16,
+    textAlign: 'center',
   },
   calories: {
-    fontSize: 14,
+    fontSize: 13,
     color: "#fff",
+    textAlign: 'center',
   },
 });
 
+
+
 export default FoodCard;
+
 

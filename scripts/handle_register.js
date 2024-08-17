@@ -1,5 +1,7 @@
+const API_BASE_URL = 'Your IP';
+
 export function handleRegister(name, password, phoneNumber, email) {
-  fetch("http://127.0.0.1:8000/auth/register", {
+  fetch(`${API_BASE_URL}/auth/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -22,7 +24,7 @@ export function handleRegister(name, password, phoneNumber, email) {
 }
 
 export function handleLogin(email, password) {
-  return fetch("http://127.0.0.1:8000/auth/login", {
+  return fetch(`${API_BASE_URL}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -48,7 +50,7 @@ export async function handleFood_search(ingredient, brand = '') {
   try {
     console.log("Fetching food data for query:", ingredient);
 
-    const url = new URL("http://127.0.0.1:8000/food/search");
+    const url = new URL(`${API_BASE_URL}/food/search`);
     const params = { ingredient };
 
     if (brand) {
@@ -58,7 +60,6 @@ export async function handleFood_search(ingredient, brand = '') {
     Object.keys(params).forEach((key) =>
       url.searchParams.append(key, params[key])
     );
-    
 
     console.log("Fetching data from:", url.toString());
 
@@ -83,14 +84,9 @@ export async function handleFood_search(ingredient, brand = '') {
   }
 }
 
-
-
-
-
-
 export async function handleFood_request_nutrients(ingr) {
   try {
-    const url = new URL("http://127.0.0.1:8000/food/nutrients"); // Ensure the port is correct
+    const url = new URL(`${API_BASE_URL}/food/nutrients`); // Ensure the port is correct
     const params = { ingr };
     Object.keys(params).forEach((key) =>
       url.searchParams.append(key, params[key])
@@ -116,4 +112,3 @@ export async function handleFood_request_nutrients(ingr) {
     return null;
   }
 }
-

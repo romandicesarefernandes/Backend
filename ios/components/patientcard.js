@@ -9,8 +9,6 @@ export default function Patientcard({ totalCalories = 0, totalProtein = 0, total
   const fatsCalories = totalFats * 9;
 
   const totalMacroCalories = proteinCalories + carbsCalories + fatsCalories;
-
-
   const proteinPercentage = totalMacroCalories > 0 ? (proteinCalories / totalMacroCalories) * 100 : 0;
   const carbsPercentage = totalMacroCalories > 0 ? (carbsCalories / totalMacroCalories) * 100 : 0;
   const fatsPercentage = totalMacroCalories > 0 ? (fatsCalories / totalMacroCalories) * 100 : 0;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, Text, TouchableOpacity, Image, Platform, Dimensions } from 'react-native';
+import { View, StyleSheet, ScrollView, Text, TouchableOpacity, Image, Platform, Dimensions, Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import FoodRing from '../ios/components/foodring';
 import COLORS from '../constants/colors';
@@ -18,21 +18,55 @@ const FoodInfoPage = ({ route }) => {
   };
 
   const addBtnClicked = () => {
-    const foodItem = {
-      name,
-      brand,
-      calories: nutrients.calories,
-      carbs: nutrients.carbs,
-      fats: nutrients.fats,
-      proteins: nutrients.proteins,
-    };
-    navigation.navigate("patientpage", {
-      selectedFood: {
-        mealType,  // Pass the mealType back
-        food: foodItem,
-      },
-    });
-  }
+
+    if (name === 'Twinkie') {
+      Alert.alert(
+        "High Sugar Alert!!!",
+        "You have selected a food with high sugar which is not ideal for diabetes! Are you sure you want to add?",
+        [
+          {
+            text: "No",
+            onPress: () => console.log("No Pressed"),
+            style: "cancel"
+          },
+          {
+            text: "Yes",
+            onPress: () => {
+              const foodItem = {
+                name,
+                brand,
+                calories: nutrients.calories,
+                carbs: nutrients.carbs,
+                fats: nutrients.fats,
+                proteins: nutrients.proteins,
+              };
+              navigation.navigate("patientpage", {
+                selectedFood: {
+                  mealType, 
+                  food: foodItem,
+                },
+              });
+            }
+          }
+        ]
+      );
+    } else {
+      const foodItem = {
+        name,
+        brand,
+        calories: nutrients.calories,
+        carbs: nutrients.carbs,
+        fats: nutrients.fats,
+        proteins: nutrients.proteins,
+      };
+      navigation.navigate("patientpage", {
+        selectedFood: {
+          mealType,  // Pass the mealType back
+          food: foodItem,
+        },
+      });
+    }
+  };
   
 
   const { name, imagei, nutrients, ingredients, brand, servingSize, mealType} = route.params;
@@ -131,7 +165,7 @@ const FoodInfoPage = ({ route }) => {
                   <Text>Dietary Fiber {Math.round(nutrients.fibers)}g</Text>
                 </View>
                 <View style={styles.subNutrientRow}>
-                  <Text>Sugars 5g</Text>
+                  <Text>Sugars {nutrients.sugars}g</Text>
                 </View>
                 <View style={styles.separator} />
                 <View style={styles.nutrientRow}>

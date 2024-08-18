@@ -9,7 +9,7 @@ import COLORS from "../constants/colors";
 import { Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-Questions = ({ navigation }) => {
+const Questions = ({ navigation }) => {
   const [isSupervisorPressed, setSupervisorPressed] = useState(false);
   const [isPatientPressed, setPatientPressed] = useState(false);
   const [showTextPatient, setShowTextPatient] = useState(true);
@@ -20,39 +20,31 @@ Questions = ({ navigation }) => {
   let isPatient = false;
 
   return (
-    <LinearGradient
+    <View
       colors={["#FFFFFF", "#007260"]}
       style={{
         flex: 1,
-        justifyContent: "flex-start",
-        alignItems: "center",
+        justifyContent: "center",
+        //alignItems: "center",
         paddingTop: 25,
       }}
     >
-      <View style={{ marginTop: 50 }}>
-        <Text style={{ fontSize: 30, fontWeight: "bold" }}>
-          {" "}
-          Welcome to Vital Track!{" "}
+      <View style={{ marginTop: 10, alignItems: "center" }}>
+        <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+          Choose a kind of account
         </Text>
       </View>
-      <Image
-        source={require("../assets/logo-train.png")}
+
+      <View
         style={{
-          height: 300,
-          width: 300,
-          marginTop: 30,
+          flexDirection: "column",
+          //alignItems: "center",
+          backgroundColor: "#007260",
+          margin: 10,
+          borderRadius: 10,
+          padding: 70,
         }}
-        resizeMode="contain"
-      />
-
-      <View style={{ marginTop: 35 }}>
-        <Text style={{ textAlign: "center" }}>
-          Before starting, please answer some questions
-        </Text>
-        <Text>What kind of account would you like?</Text>
-      </View>
-
-      <View style={{ flexDirection: "row" }}>
+      >
         <TouchableOpacity
           onPress={() => {
             setSupervisorPressed((prevState) => !prevState);
@@ -63,15 +55,15 @@ Questions = ({ navigation }) => {
             setShowTextDefault(false);
           }}
           style={{
-            flex: 1,
+            //flex: 1,
             alignItems: "center",
             justifyContent: "center",
             flexDirection: "row",
             height: 52,
             borderWidth: 1,
             borderColor: COLORS.grey,
-            marginRight: 4,
-            marginLeft: 4,
+            marginRight: 0,
+            marginLeft: 0,
             borderRadius: 10,
             backgroundColor: isSupervisorPressed ? "#b3ecec" : COLORS.white,
           }}
@@ -82,11 +74,11 @@ Questions = ({ navigation }) => {
               height: 40,
               width: 40,
               marginRight: 4,
+              resizeMode: "contain",
             }}
-            resizeMode="contain"
           />
 
-          <Text>Supervisor</Text>
+          <Text>Provider</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -99,15 +91,15 @@ Questions = ({ navigation }) => {
             setSupervisorPressed(false);
           }}
           style={{
-            flex: 1,
+            // flex: 1,
             alignItems: "center",
             justifyContent: "center",
             flexDirection: "row",
             height: 52,
             borderWidth: 1,
             borderColor: COLORS.grey,
-            marginRight: 4,
-            marginLeft: 4,
+            marginTop: 30,
+
             borderRadius: 10,
             backgroundColor: isPatientPressed ? "#b3ecec" : COLORS.white,
           }}
@@ -130,7 +122,7 @@ Questions = ({ navigation }) => {
         isPatientPressed &&
         (isPatientPressed ? (
           <View style={{ margin: 30 }}>
-            <Text style={{ textAlign: "justify" }}>
+            <Text style={{ textAlign: "center", fontSize: 16 }}>
               With a Patient Account, you will keep track of your nutrition, add
               a supervsisor to help you with your diet, and learn about
               nutrition!
@@ -141,8 +133,8 @@ Questions = ({ navigation }) => {
       {showTextSupervisor &&
         (isSupervisorPressed ? (
           <View style={{ margin: 30 }}>
-            <Text style={{ textAlign: "justify" }}>
-              With a Supervisor Account, you will be able to help your patients
+            <Text style={{ textAlign: "center", fontSize: 16 }}>
+              With a Provider Account, you will be able to help your patients
               with their diet, track their nutrition, and learn about nutrition!
             </Text>
           </View>
@@ -150,24 +142,28 @@ Questions = ({ navigation }) => {
 
       {showTextDefault && (
         <View style={{ margin: 30 }}>
-          <Text style={{ textAlign: "justify" }}>Default text</Text>
+          <Text style={{ textAlign: "justify" }}>Choose an option!</Text>
         </View>
       )}
-
-      <Button
-        onPress={() => {
-          console.log(isSupervisorPressed);
-          if (isSupervisorPressed == true) navigation.navigate("mainpage");
-          if (isPatientPressed == true) navigation.navigate("patientpage");
-        }}
-        title="Continue"
-        style={{
-          marginTop: 18,
-          marginBottom: 4,
-          width: 200,
-        }}
-      />
-    </LinearGradient>
+      <View style={{ alignItems: "center", justifyContent: "center" }}>
+        <Button
+          onPress={() => {
+            console.log(isSupervisorPressed);
+            if (isSupervisorPressed == true) navigation.navigate("mainpage");
+            if (isPatientPressed == true)
+              navigation.navigate("questions-condition");
+          }}
+          title="Continue"
+          color="black" // This sets the text color to black
+          style={{
+            marginTop: 18,
+            backgroundColor: "#6EA9BC",
+            marginBottom: 4,
+            width: 200,
+          }}
+        />
+      </View>
+    </View>
   );
 };
 export default Questions;

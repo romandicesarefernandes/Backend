@@ -9,12 +9,10 @@ const SearchFoodPage = ({ navigation, route}) => {
   const [images, setImages] = useState([
     "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1"
   ]);
-  const [names, setNames] = useState([
-    "SomethingTest"
-  ]);
+  const [names, setNames] = useState([]);
   const [nutrients, setNutrients] = useState([]);
   const [ingredients, setIngredients] = useState([]);
-  const [brands, setBrands] = useState(["generic"]);
+  const [brands, setBrands] = useState([]);
   const [servingSizes, setServingSize] = useState([]);
   const [searchPhrase, setSearchPhrase] = useState("");
   const [clicked, setClicked] = useState(false);
@@ -38,6 +36,7 @@ const SearchFoodPage = ({ navigation, route}) => {
           proteins: item.nutrients.PROCNT || 0,
           carbs: item.nutrients.CHOCDF || 0,
           fibers: item.nutrients.FIBTG || 0,
+          sugars: item.nutrients.SUGAR || 0,
         }));
         const newBrands = foodDataResponse.data.map((item) => item.brand || "Generic Brand");
         const newServingSize = foodDataResponse.data.map((item) => item.serving_sizes || 100);
@@ -65,7 +64,7 @@ const SearchFoodPage = ({ navigation, route}) => {
   
 
   useEffect(() => {
-    fetchFoodData("Pasta and Cheese and Beef and Rice and Apple");
+    fetchFoodData("Pasta and Cheese and Beef and Rice and Twinkie");
   }, []);
 
   const handleCardPress = async (name, image) => {

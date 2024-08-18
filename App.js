@@ -14,12 +14,18 @@ import questions from "./screens/questionspage";
 import SearchFoodPage from "./screens/search_food_page";
 import foodinfopage from "./screens/food_info";
 import fullnutritionpage from "./screens/full_nutiriton_report";
+import Questions from "./screens/questions-condition";
+import ConditionQuestions from "./screens/questions-condition";
+import conditionQuestions from "./screens/questions-condition";
+import { LogBox } from 'react-native'; 
+
+LogBox.ignoreAllLogs(true);
 
 const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="patientpage">
+      <Stack.Navigator initialRouteName="welcome">
         <Stack.Screen
           name="welcome"
           component={welcome}
@@ -46,6 +52,12 @@ export default function App() {
         <Stack.Screen
           name="questionspage"
           component={questions}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="questions-condition"
+          component={conditionQuestions}
           options={{ headerShown: false }}
         />
 

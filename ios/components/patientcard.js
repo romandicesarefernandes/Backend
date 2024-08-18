@@ -10,7 +10,7 @@ export default function Patientcard({ totalCalories = 0, totalProtein = 0, total
 
   const totalMacroCalories = proteinCalories + carbsCalories + fatsCalories;
 
-  // Ensure totalMacroCalories is greater than 0 to avoid NaN
+
   const proteinPercentage = totalMacroCalories > 0 ? (proteinCalories / totalMacroCalories) * 100 : 0;
   const carbsPercentage = totalMacroCalories > 0 ? (carbsCalories / totalMacroCalories) * 100 : 0;
   const fatsPercentage = totalMacroCalories > 0 ? (fatsCalories / totalMacroCalories) * 100 : 0;
@@ -26,7 +26,7 @@ export default function Patientcard({ totalCalories = 0, totalProtein = 0, total
           <AnimatedCircularProgress
             size={100}
             width={12}
-            fill={fatsPercentage}  // Test with a static value of 50%
+            fill={fatsPercentage}  
             tintColor="#f7bf05"
             backgroundColor="#C1C7C9"
           />
@@ -39,7 +39,7 @@ export default function Patientcard({ totalCalories = 0, totalProtein = 0, total
           <AnimatedCircularProgress
             size={100}
             width={12}
-            fill={proteinPercentage}  // Test with a static value of 50%
+            fill={proteinPercentage} 
             tintColor="#a410fe"
             backgroundColor="#C1C7C9"
           />
@@ -52,7 +52,7 @@ export default function Patientcard({ totalCalories = 0, totalProtein = 0, total
           <AnimatedCircularProgress
             size={100}
             width={12}
-            fill={carbsPercentage}  // Test with a static value of 50%
+            fill={carbsPercentage}  
             tintColor="#27d8ef"
             backgroundColor="#C1C7C9"
           />
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   calorieContainer: {
-    width: "100%",  // Ensure it takes the full width of the container
+    width: "100%", 
     marginBottom: 20,
     paddingLeft: 20,
     paddingRight: 20,

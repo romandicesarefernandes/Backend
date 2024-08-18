@@ -4,7 +4,8 @@ import { handleFood_search, handleFood_request_nutrients} from "../scripts/handl
 import FoodCard from "../ios/components/food";
 import SearchBar from "../ios/components/SearchBar";
 
-const SearchFoodPage = ({ navigation }) => {
+const SearchFoodPage = ({ navigation, route}) => {
+  const { mealType } = route.params; 
   const [images, setImages] = useState([
     "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1"
   ]);
@@ -74,7 +75,7 @@ const SearchFoodPage = ({ navigation }) => {
     let brand = brands[index];
     let servingSize = servingSizes[index];
   
-    navigation.navigate("food_info", {brand, name, imagei: image, nutrients: nutrientData, ingredients: ingredientData, servingSize});
+    navigation.navigate("food_info", {brand, name, imagei: image, nutrients: nutrientData, ingredients: ingredientData, servingSize, mealType});
   };
 
   const handleSearch = async () => {

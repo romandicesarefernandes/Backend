@@ -18,10 +18,24 @@ const FoodInfoPage = ({ route }) => {
   };
 
   const addBtnClicked = () => {
-    navigation.navigate("patientpage");
+    const foodItem = {
+      name,
+      brand,
+      calories: nutrients.calories,
+      carbs: nutrients.carbs,
+      fats: nutrients.fats,
+      proteins: nutrients.proteins,
+    };
+    navigation.navigate("patientpage", {
+      selectedFood: {
+        mealType,  // Pass the mealType back
+        food: foodItem,
+      },
+    });
   }
+  
 
-  const { name, imagei, nutrients, ingredients, brand, servingSize} = route.params;
+  const { name, imagei, nutrients, ingredients, brand, servingSize, mealType} = route.params;
 
   const totalMacros = nutrients.fats + nutrients.proteins + nutrients.carbs;
   const proteinPercentage = (nutrients.proteins / totalMacros) * 100;

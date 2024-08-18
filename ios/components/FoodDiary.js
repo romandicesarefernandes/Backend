@@ -1,59 +1,23 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, Alert } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import React from "react";
+import { View, Text, TouchableOpacity, StyleSheet, FlatList } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
-const FoodDiary = () => {
-  const navigation = useNavigation();
-  const [mealData, setMealData] = useState({
-    breakfast: [
-      { name: "Fries", brand: "Generic Brand", calories: 100 },
-      { name: "Pancakes", brand: "Generic Brand", calories: 500 },
-    ],
-    lunch: [{ name: "Burger", brand: "Generic Brand", calories: 300 }],
-    dinner: [],
-    snacks: [],
-  });
+const FoodDiary = ({ mealData, onAddFood, onDeleteFood, navigation }) => {
 
   const handleNavigate = (mealType) => {
     navigation.navigate("search_food_page", {
       mealType,
       onSelectFood: (food) => {
-        setMealData((prevData) => ({
-          ...prevData,
-          [mealType]: [...prevData[mealType], food],
-        }));
+        onAddFood(mealType, food);
       },
     });
-  };
-
-  const confirmDeleteFoodItem = (mealType) => {
-    if (mealData[mealType].length === 0) {
-      Alert.alert("No items to delete", `There are no items in ${mealType} to delete.`);
-      return;
-    }
-    
-    navigation.navigate("delete_food_page", {
-      mealType,
-      mealItems: mealData[mealType],
-      onDeleteFood: (index) => {
-        setMealData((prevData) => ({
-          ...prevData,
-          [mealType]: prevData[mealType].filter((_, i) => i !== index),
-        }));
-      },
-    });
-  };
-
-  const calculateTotalCalories = (mealType) => {
-    return mealData[mealType].reduce((total, item) => total + item.calories, 0);
   };
 
   const renderMeal = (mealType, label) => (
     <View style={styles.mealContainer}>
       <View style={styles.labelContainer}>
-        <Text style={styles.label}>{label} - {calculateTotalCalories(mealType)}</Text>
-        <TouchableOpacity style={styles.deleteButton} onPress={() => confirmDeleteFoodItem(mealType)}>
+        <Text style={styles.label}>{label} - {Math.round(calculateTotalCalories(mealType))}</Text>
+        <TouchableOpacity style={styles.deleteButton} onPress={() => onDeleteFood(mealType)}>
           <AntDesign name="ellipsis1" size={16} color="black"/>
         </TouchableOpacity>
       </View>
@@ -63,7 +27,7 @@ const FoodDiary = () => {
         renderItem={({ item }) => (
           <View style={styles.foodContainer}>
             <Text style={styles.foodText}>
-              {item.name} - {item.brand} {item.calories} cals
+              {item.name} - {item.brand} {Math.round(item.calories)} cals
             </Text>
           </View>
         )}
@@ -75,10 +39,13 @@ const FoodDiary = () => {
             <Text style={styles.addFoodLabel}>  Add Food</Text>
           </View>
         </TouchableOpacity>
-        
       </View>
     </View>
   );
+
+  const calculateTotalCalories = (mealType) => {
+    return mealData[mealType].reduce((total, item) => total + item.calories, 0);
+  };
 
   return (
     <View style={styles.container}>
@@ -89,6 +56,7 @@ const FoodDiary = () => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {

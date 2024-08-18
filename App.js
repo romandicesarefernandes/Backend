@@ -19,7 +19,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="search_food_page">
+      <Stack.Navigator initialRouteName="patientpage">
         <Stack.Screen
           name="welcome"
           component={welcome}

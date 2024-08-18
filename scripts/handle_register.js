@@ -1,4 +1,4 @@
-const API_BASE_URL = 'Your IP';
+const API_BASE_URL = 'http://127.0.0.1:8000';
 
 export function handleRegister(name, password, phoneNumber, email) {
   fetch(`${API_BASE_URL}/auth/register`, {

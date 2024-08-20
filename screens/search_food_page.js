@@ -14,6 +14,7 @@ const SearchFoodPage = ({ navigation, route}) => {
   const [ingredients, setIngredients] = useState([]);
   const [brands, setBrands] = useState([]);
   const [servingSizes, setServingSize] = useState([]);
+  const [foodids, setFoodId] = useState([]);
   const [searchPhrase, setSearchPhrase] = useState("");
   const [clicked, setClicked] = useState(false);
   const [noResults, setNoResults] = useState(false);
@@ -25,12 +26,12 @@ const SearchFoodPage = ({ navigation, route}) => {
       
       console.log("API Response:", foodDataResponse);
       
-      if (foodDataResponse && foodDataResponse.data && Array.isArray(foodDataResponse.data) && foodDataResponse.data.length > 0) {
-        const newImages = foodDataResponse.data.map(
+      if (foodDataResponse && foodDataResponse.data && foodDataResponse.data.all && Array.isArray(foodDataResponse.data.all) && foodDataResponse.data.all.length > 0) {
+        const newImages = foodDataResponse.data.all.map(
           (item) => item.image || "https://i0.wp.com/static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg?ssl=1"
         );
-        const newNames = foodDataResponse.data.map((item) => item.label);
-        const newNutrients = foodDataResponse.data.map((item) => ({
+        const newNames = foodDataResponse.data.all.map((item) => item.label);
+        const newNutrients = foodDataResponse.data.all.map((item) => ({
           calories: item.nutrients.ENERC_KCAL || 0,
           fats: item.nutrients.FAT || 0,
           proteins: item.nutrients.PROCNT || 0,
@@ -38,9 +39,10 @@ const SearchFoodPage = ({ navigation, route}) => {
           fibers: item.nutrients.FIBTG || 0,
           sugars: item.nutrients.SUGAR || 0,
         }));
-        const newBrands = foodDataResponse.data.map((item) => item.brand || "Generic Brand");
-        const newServingSize = foodDataResponse.data.map((item) => item.serving_sizes || 100);
-        const newIngredients = foodDataResponse.data.map((item) => item.content_label ? item.content_label.split(";") : []);
+        const newFoodIds = foodDataResponse.data.all.map((item) => item.food_id);
+        const newBrands = foodDataResponse.data.all.map((item, index) => item.brand || "Generic Brand");
+        const newServingSize = foodDataResponse.data.all.map((item) => 100);
+        const newIngredients = foodDataResponse.data.all.map((item) => item.content_label ? item.content_label.split(";") : []);
   
         setImages(newImages);
         setNames(newNames);
@@ -48,6 +50,7 @@ const SearchFoodPage = ({ navigation, route}) => {
         setIngredients(newIngredients);
         setBrands(newBrands);
         setServingSize(newServingSize);
+        setFoodId(newFoodIds);
         setNoResults(false);
       } 
       else {
@@ -64,17 +67,26 @@ const SearchFoodPage = ({ navigation, route}) => {
   
 
   useEffect(() => {
-    fetchFoodData("Pasta and Cheese and Beef and Rice and Twinkie");
+    fetchFoodData("Pasta");
   }, []);
 
-  const handleCardPress = async (name, image) => {
-    const index = names.indexOf(name);
-    let nutrientData = nutrients[index];
-    let ingredientData = ingredients[index];
-    let brand = brands[index];
-    let servingSize = servingSizes[index];
+  const handleCardPress = async (foodId) => {
+    const index = foodids.indexOf(foodId);
   
-    navigation.navigate("food_info", {brand, name, imagei: image, nutrients: nutrientData, ingredients: ingredientData, servingSize, mealType});
+    if (index !== -1) {
+      let nutrientData = nutrients[index];
+      let ingredientData = ingredients[index];
+      let brand = brands[index];
+      let servingSize = servingSizes[index];
+      let name = names[index];
+      let image = images[index];
+
+      console.log(`Selected Food ID: ${foodId} at Index: ${index}, Brand: ${brand}`);
+
+      navigation.navigate("food_info", {brand, name, imagei: image, nutrients: nutrientData, ingredients: ingredientData, servingSize, mealType});
+    } else {
+      console.error(`Food ID ${foodId} not found in the list.`);
+    }
   };
 
   const handleSearch = async () => {
@@ -100,7 +112,14 @@ const SearchFoodPage = ({ navigation, route}) => {
           {noResults ? (
             <Text style={styles.noResultsText}>No results found. Please try a different search term.</Text>
           ) : (
-            <FoodCard images={images} names={names} nutrients={nutrients} brands={brands} onCardPress={handleCardPress} />
+          <FoodCard
+            foodIds={foodids} 
+            names={names}
+            images={images}
+            nutrients={nutrients}
+            brands={brands}
+            onCardPress={handleCardPress}
+          />
           )}
           
           <View style={styles.spacer}/>

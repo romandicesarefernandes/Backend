@@ -54,6 +54,7 @@ const FoodInfoPage = ({ route }) => {
       const foodItem = {
         name,
         brand,
+        ingredients,
         calories: nutrients.calories,
         carbs: nutrients.carbs,
         fats: nutrients.fats,
@@ -70,6 +71,7 @@ const FoodInfoPage = ({ route }) => {
   
 
   const { name, imagei, nutrients, ingredients, brand, servingSize, mealType} = route.params;
+  console.log("Brand in FoodInfoPage:", brand);
 
   const totalMacros = nutrients.fats + nutrients.proteins + nutrients.carbs;
   const proteinPercentage = (nutrients.proteins / totalMacros) * 100;

@@ -61,8 +61,6 @@ export async function handleFood_search(ingredient, brand = '') {
       url.searchParams.append(key, params[key])
     );
 
-    console.log("Fetching data from:", url.toString());
-
     const response = await fetch(url, {
       method: "GET",
       headers: {
@@ -75,7 +73,10 @@ export async function handleFood_search(ingredient, brand = '') {
     }
 
     const data = await response.json();
-    console.log("Data received:", data);
+    
+    data.data.all.forEach((item, index) => {
+      console.log(`Item ${index + 1}:`, JSON.stringify(item, null, 2));
+    });
 
     return data;
   } catch (error) {
@@ -84,20 +85,22 @@ export async function handleFood_search(ingredient, brand = '') {
   }
 }
 
+
+
 export async function handleFood_request_nutrients(ingr) {
   try {
-    const url = new URL(`${API_BASE_URL}/food/nutrients`); // Ensure the port is correct
+    const url = new URL(`${API_BASE_URL}/food/nutrients`); 
     const params = { ingr };
     Object.keys(params).forEach((key) =>
       url.searchParams.append(key, params[key])
     );
 
     const response = await fetch(url, {
-      method: "POST", // Make sure it's POST if the FastAPI expects POST, otherwise GET
+      method: "POST", 
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(params), // Add this if you're using POST method
+      body: JSON.stringify(params), 
     });
 
     if (!response.ok) {

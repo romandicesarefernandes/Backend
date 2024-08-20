@@ -1,8 +1,7 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity, Image, Text, Dimensions } from "react-native";
-import COLORS from "../../constants/colors";
 
-const FoodCard = ({ images, names, nutrients, onCardPress, brands }) => {
+const FoodCard = ({ images, names, nutrients, onCardPress, brands, foodIds }) => {
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = screenWidth / 3 - 16;
 
@@ -13,7 +12,7 @@ const FoodCard = ({ images, names, nutrients, onCardPress, brands }) => {
         <TouchableOpacity
           key={i + index}
           style={[styles.card, { width: cardWidth, height: cardWidth * 1.4 }]}
-          onPress={() => onCardPress(names[i + index], image)}
+          onPress={() => onCardPress(foodIds[i + index])}  // Pass foodId to onCardPress
         >
           <Image source={{ uri: image }} style={styles.image} />
           <View style={styles.textContainer}>
@@ -112,8 +111,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
-
 
 export default FoodCard;
 

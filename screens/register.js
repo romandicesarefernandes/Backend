@@ -273,7 +273,7 @@ const Register = ({ navigation }) => {
               );
             else {
               handleRegister(name, password, phoneNumber, Email);
-              navigation.navigate("questionspage");
+              navigation.navigate("questionspage", {Email});
             }
           }}
           title="Sign Up"

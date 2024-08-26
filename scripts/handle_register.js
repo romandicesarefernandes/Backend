@@ -16,7 +16,6 @@ export function handleRegister(name, password, phoneNumber, email) {
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
-      // Handle response data
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -107,7 +106,7 @@ export async function handleFood_request_nutrients(ingr) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const data = await response.json(); // Assuming JSON response
+    const data = await response.json(); 
 
     return data;
   } catch (error) {
@@ -115,3 +114,4 @@ export async function handleFood_request_nutrients(ingr) {
     return null;
   }
 }
+

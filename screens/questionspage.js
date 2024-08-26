@@ -9,7 +9,7 @@ import COLORS from "../constants/colors";
 import { Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-const Questions = ({ navigation }) => {
+const Questions = ({ navigation, route }) => {
   const [isSupervisorPressed, setSupervisorPressed] = useState(false);
   const [isPatientPressed, setPatientPressed] = useState(false);
   const [showTextPatient, setShowTextPatient] = useState(true);
@@ -18,6 +18,8 @@ const Questions = ({ navigation }) => {
 
   let isSupervisor = false;
   let isPatient = false;
+
+  const {Email} = route.params;
 
   return (
     <View
@@ -154,7 +156,7 @@ const Questions = ({ navigation }) => {
               navigation.navigate("questions-condition");
           }}
           title="Continue"
-          color="black" // This sets the text color to black
+          color="black" 
           style={{
             marginTop: 18,
             backgroundColor: "#6EA9BC",

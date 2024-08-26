@@ -12,7 +12,7 @@ const FoodCard = ({ images, names, nutrients, onCardPress, brands, foodIds }) =>
         <TouchableOpacity
           key={i + index}
           style={[styles.card, { width: cardWidth, height: cardWidth * 1.4 }]}
-          onPress={() => onCardPress(foodIds[i + index])}  // Pass foodId to onCardPress
+          onPress={() => onCardPress(foodIds[i + index])}
         >
           <Image source={{ uri: image }} style={styles.image} />
           <View style={styles.textContainer}>

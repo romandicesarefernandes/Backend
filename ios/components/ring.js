@@ -27,10 +27,10 @@ const Ring = () => {
                     >
                         {() => (
                             <AnimatedCircularProgress 
-                                size={70} // smaller size so it fits inside the other circles
+                                size={70}
                                 width={12}
-                                fill={60} // adjust this value as needed
-                                tintColor="#ff0000" // different color so it's visible
+                                fill={60}
+                                tintColor="#ff0000"
                                 onAnimationComplete={() => console.log('inner onAnimationComplete')}
                                 backgroundColor="#C1C7C9"
                             />

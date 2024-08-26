@@ -2,10 +2,11 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
-const FoodDiary = ({ mealData, onAddFood, onDeleteFood, navigation }) => {
+const FoodDiary = ({ mealData, onAddFood, onDeleteFood, navigation, conditionData }) => {
 
   const handleNavigate = (mealType) => {
     navigation.navigate("search_food_page", {
+      conditionData,
       mealType,
       onSelectFood: (food) => {
         onAddFood(mealType, food);

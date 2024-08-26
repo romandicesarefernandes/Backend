@@ -9,7 +9,7 @@ const ConditionQuestions = ({ route }) => {
   const [selectedCondition, setSelectedCondition] = useState(null); 
 
   const continueClicked = () => {
-    navigation.navigate("patientpage", { condition: selectedCondition });
+    navigation.navigate("patientpage", { condition: selectedCondition});
   };
 
   return (

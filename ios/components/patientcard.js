@@ -1,7 +1,8 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity} from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { ProgressBar, MD3Colors } from "react-native-paper";
+import { AntDesign } from "@expo/vector-icons";
 
 export default function Patientcard({ totalCalories = 0, totalProtein = 0, totalCarbs = 0, totalFats = 0, caloriesGoal}) {
   const proteinCalories = totalProtein * 4;
@@ -15,6 +16,10 @@ export default function Patientcard({ totalCalories = 0, totalProtein = 0, total
 
   const calorieGoals = caloriesGoal;
   const caloriePercentage = totalCalories / calorieGoals;
+
+  const fakefunction = () => {
+
+  }
 
   return (
     <View>
@@ -30,6 +35,15 @@ export default function Patientcard({ totalCalories = 0, totalProtein = 0, total
         </Text>
       </View>
       <View style={styles.cardContainer}>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity onPress={() => fakefunction()}>
+          <AntDesign
+            name="left"
+            size={25}
+            color='black'
+          />
+          </TouchableOpacity>
+        </View>
         <View style={styles.nutrientContainer}>
           <Text>Fat</Text>
           <AnimatedCircularProgress
@@ -68,6 +82,16 @@ export default function Patientcard({ totalCalories = 0, totalProtein = 0, total
           <Text style={styles.percentageText}>{carbsPercentage.toFixed(0)}%</Text>
           <Text>{Math.round(totalCarbs)}g</Text>
         </View>
+
+        <View style={styles.buttonContainer}>
+        <TouchableOpacity onPress={() => fakefunction()}>
+          <AntDesign
+            name="right"
+            size={25}
+            color='black'
+          />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -99,6 +123,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginLeft: 20,
     marginRight:20
+  },
+  buttonContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 5,
+    marginRight:5,
+    
   },
   percentageText: {
     position: "absolute",
